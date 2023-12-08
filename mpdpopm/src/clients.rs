@@ -658,7 +658,7 @@ impl Client {
     where
         <T as FromStr>::Err: std::error::Error + Sync + Send + 'static,
     {
-        let msg = format!("sticker get song \"{}\" \"{}\"", file, sticker_name);
+        let msg = format!("sticker get song \"{}\" \"{}\"", file.replace("\"","\\\""), sticker_name);
         let text = self.stream.req(&msg).await?;
         debug!("Sent message `{}'; got `{}'", &msg, &text);
 
@@ -691,7 +691,7 @@ impl Client {
     ) -> Result<()> {
         let msg = format!(
             "sticker set song \"{}\" \"{}\" \"{}\"",
-            file, sticker_name, sticker_value
+            file.replace("\"","\\\""), sticker_name, sticker_value
         );
         let text = self.stream.req(&msg).await?;
         debug!("Sent `{}'; got `{}'", &msg, &text);
@@ -701,7 +701,7 @@ impl Client {
 
     /// Send a file to a playlist
     pub async fn send_to_playlist(&mut self, file: &str, pl: &str) -> Result<()> {
-        let msg = format!("playlistadd \"{}\" \"{}\"", pl, file);
+        let msg = format!("playlistadd \"{}\" \"{}\"", pl, file.replace("\"","\\\""));
         let text = self.stream.req(&msg).await?;
         debug!("Sent `{}'; got `{}'.", &msg, &text);
 
